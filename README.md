@@ -1,4 +1,7 @@
-# Boilerplate code for compiled functions and classes linked to ROOT
+# C++ Analysis Library Generation With Linking to ROOT
+This program will generate an arbitrary number of functions, classes, LinkDef,
+Makefile.am, autogen, etc, necessary to create a standalone analysis library
+which can then be loaded and executed in a ROOT macro.
 
 ## Step 0
 Read the documentation, email the author, michael.beaumier@gmail.com afterwards,
