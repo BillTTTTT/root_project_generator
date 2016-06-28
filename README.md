@@ -99,7 +99,7 @@ This will not work for ROOT 6, it will need to be modified. The C++ stuff will
 be just fine, but ROOT 6 does not handle dictionary generation (needed to run
 your functions and classes interactively in CINT) the same way as ROOT 5.34.
 
-## Documentation
+## Additional Documentation
 
 Lists of classes and functions are white-space separated (i.e.):
 
