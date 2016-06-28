@@ -174,11 +174,11 @@ def make_class_source(class_name):
     class_source.append("#include <iostream>")
     class_source.append("")
     class_source.append("%s::%s() {"%(class_name,class_name))
-    class_source.append("  std::cout << \"%s instantiated at\" << this << std::endl;"%class_name)
+    class_source.append("  std::cout << \"%s instantiated at \" << this << std::endl;"%class_name)
     class_source.append("}")
     class_source.append("")
     class_source.append("%s::~%s() {"%(class_name,class_name))
-    class_source.append("  std::cout << \"Destroying %s from\" << this << std::endl;"%class_name)
+    class_source.append("  std::cout << \"Destroying %s from \" << this << std::endl;"%class_name)
     class_source.append("}")
     return class_source
 
@@ -219,10 +219,12 @@ def make_test_macro(classes,functions,lib_name):
     test_macro = []
     test_macro.append("int Run_Tests(){")
     test_macro.append("  gSystem->Load(\"lib%s.so\");"%(lib_name))
-    for call in classes:
-        test_macro.append("  %s %s_instance;"%(call,call))
-    for call in functions:
-        test_macro.append("  %s();"%(call[1]))
+    if classes is not None:
+        for call in classes:
+            test_macro.append("  %s %s_instance;"%(call,call))
+    if functions is not None:
+        for call in functions:
+            test_macro.append("  %s();"%(call[1]))
     test_macro.append("  return 0;")
     test_macro.append("}")
     return test_macro
