@@ -22,7 +22,7 @@ Execute the project generation command:
 ### Project Generation Example
 <pre> 
 ./make_project.py --build_dir build --source_dir source --macros_dir \
-macros -classes OneClass AnotherClass ThirdClass --functions int,FirstFunction \
+macros --classes OneClass AnotherClass ThirdClass --functions int,FirstFunction \
 double,SecondFunction --lib_name MyLibrary --install_dir $MYINSTALL 
 </pre>
 
