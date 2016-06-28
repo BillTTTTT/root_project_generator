@@ -64,6 +64,7 @@ def make_link_def(classes,functions):
     linkDefFile.append("#endif /* __CINT__ */")
     return linkDefFile
 
+# BE VERY CAREFUL ABOUT SPACING!!!
 def make_makefile(classes,functions,lib_name):
     '''
     Argumets are arrays of strings for class names (classes)
@@ -112,6 +113,7 @@ def make_makefile(classes,functions,lib_name):
     Makefile.append("# not have OFFLINE_MAIN defined)")
     Makefile.append("#  -L$(OFFLINE_MAIN)/lib \\")
     Makefile.append("AM_LDFLAGS = \\")
+    Makefile.append("\t"+"-L$(OFFLINE_MAIN)/lib \\")
     Makefile.append("\t"+"-L$(ROOTSYS)/lib \\")
     Makefile.append("\t"+"-L$(libdir)")
     Makefile.append("")
@@ -127,21 +129,24 @@ def make_makefile(classes,functions,lib_name):
     Makefile.append("testexternals_LDADD = \\")
     Makefile.append("\t"+"lib%s.la"%(lib_name))
     Makefile.append("")
+    # MUST HAVE TABS
     Makefile.append("testexternals.C:")
     Makefile.append("\t"+"echo \"//*** this is a generated file. Do not commit, do not edit\" > $@")
     Makefile.append("\t"+"echo \"int main()\" >> $@")
     Makefile.append("\t"+"echo \"{\" >> $@")
-    Makefile.append("\t"+"echo \"  return 0;\" >> $@")
+    Makefile.append("\t"+"echo \"\t"+"return 0;\" >> $@")
     Makefile.append("\t"+"echo \"}\" >> $@")
     Makefile.append("")
     Makefile.append("# This is where the dictionary file is generated")
     Makefile.append("DictOutput.cxx: \\")
     for name in sorted_list:
         Makefile.append("\t"+"%s.h \\"%name)
+    # MUST HAVE TABS
     Makefile.append("\t"+"%sLinkDef.h"%lib_name)
     Makefile.append("\t"+"rootcint -f $@ -c $(DEFAULT_INCLUDES) $(AM_CPPFLAGS) $^")
     Makefile.append("")
     Makefile.append("clean-local:")
+    # MUST HAVE TABS
     Makefile.append("\t"+"rm -f *Dict.*")
     return Makefile
 
@@ -213,7 +218,7 @@ def make_test_macro(classes,functions,lib_name):
     """
     test_macro = []
     test_macro.append("int Run_Tests(){")
-    test_macro.append("  gSystem->Load(\"lib%s.so\")"%(lib_name))
+    test_macro.append("  gSystem->Load(\"lib%s.so\");"%(lib_name))
     for call in classes:
         test_macro.append("  %s %s_instance;"%(call,call))
     for call in functions:
@@ -264,6 +269,7 @@ def make_clean_file(lib_name,source_dir,build_dir,install_dir):
     clean_file.append("rm -rfv %s/configure"%source_dir)
     clean_file.append("rm -rfv %s/ltmain.sh"%source_dir)
     clean_file.append("rm -rfv %s/Makefile.in"%source_dir)
+    clean_file.append("rm -rfv %s/compile"%source_dir)
     clean_file.append("rm -vf lib/*")
     clean_file.append("rm -vf %s/lib/lib%s*"%(install_dir,lib_name))
     return clean_file
@@ -375,7 +381,7 @@ def main():
     dump_files(function_sources,'.C',source_dir)
     dump_files(function_headers,'.h',source_dir)
     dump_files(Makefile,'.am',source_dir)
-    dump_files(linkDefFile,'.C',source_dir)
+    dump_files(linkDefFile,'.h',source_dir)
     dump_files(autogen_sh,'.sh',source_dir)
     dump_files(configure_ac,'.ac',source_dir)
     dump_files(test_macro,'.C',macros_dir)
