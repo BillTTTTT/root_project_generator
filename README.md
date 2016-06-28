@@ -70,6 +70,7 @@ you can use your root libraries from any location on your system.
 In bash, (i.e. ~/.bashrc), this would look like:
 <code>
 export MYINSTALL=/direct/phenix+u/workarea/beaumim/install
+
 export PATH=$PATH:$MYINSTALL
 </code>
 
@@ -77,6 +78,7 @@ In cshell, (i.e. ~/.cshrc), this would look like:
 
 <code>
 setenv MYINSTALL /direct/phenix+u/beaumim/workarea/install
+
 set path = ($MYINSTALL/bin $path)
 </code>
 
