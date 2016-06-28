@@ -8,17 +8,17 @@ if you have questions.
 
 Clone the repository:
 
-<code>
+<pre>
 git clone https://github.com/Jollyhrothgar/root_project_generator
-</code>
+</pre>
 
 ## Step 2
 
 Run the script (example):
 
-<code> ./make_project.py --build_dir build --source_dir source --macros_dir
+<pre> ./make_project.py --build_dir build --source_dir source --macros_dir
 macros -classes OneClass AnotherClass ThirdClass --functions int,FirstFunction
-double,SecondFunction --lib_name MyLibrary --install_dir $MYINSTALL</code>
+double,SecondFunction --lib_name MyLibrary --install_dir $MYINSTALL</pre>
 
 Note, you can use shorter versions of each CLI flag - just type "make_project.py
 -h"
@@ -27,34 +27,34 @@ This generates your project area with separated build, source and macros
 directories. Run it, and see how your project is structured. You also get a
 Makefile and a cleaning script as well. 
 
-Note you can call the classes and directories whatever you want. You can
-overlap directories as well. Some people prefer to build in their source
-directory. In that case just do: -s src -b src, this will put everything in a
-directory called 'src'. This only effects where the fullClean.sh script looks
-to delete unnecessary build files, if you want to clean up your work area or
-re-compile.
+Note you can call the classes and directories whatever you want. You can overlap
+directories as well. Some people prefer to build in their source directory. In
+that case just do: -source_dir source --build_dir source, this will put
+everything in a directory called 'src'. This only effects where the fullClean.sh
+script looks to delete unnecessary build files, if you want to clean up your
+work area or re-compile.
 
 ## Step 3 
 
 Go to your build directory, and generate the makefiles for your project with:
 
-<code>
+<pre>
 ../source/autogen.sh --prefix=$MYINSTALL
-</code>
+</pre>
 
 ## Step 4
 Compile and install your project with:
 
-<code>
+<pre>
 make install
-</code>
+</pre>
 
 ## Step 5
 Now, go to the macros directory, and test the project with:
 
-<code>
+<pre>
 root -l Run_Tests.C
-</code>
+</pre>
 
 You should see a series of outputs confirming that each one of your functions
 and classes was instantiated.
@@ -73,23 +73,17 @@ you can use your root libraries from any location on your system.
 
 In bash, (i.e. ~/.bashrc), this would look like:
 
-<code>
+<pre>
 export MYINSTALL=/direct/phenix+u/workarea/beaumim/install
-</code>
-
-<code>
 export PATH=$PATH:$MYINSTALL
-</code>
+</pre>
 
 In cshell, (i.e. ~/.cshrc), this would look like:
 
-<code>
+<pre>
 setenv MYINSTALL /direct/phenix+u/beaumim/workarea/install
-</code>
-
-<code>
 set path = ($MYINSTALL/bin $path)
-</code>
+</pre>
 
 If you use this script on a cluster, you will need to modify the autogen.sh file
 to point to wherever libtoolize is installed (for PHENIX, its in $OFFLINE_MAIN).
