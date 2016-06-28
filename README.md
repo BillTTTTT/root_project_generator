@@ -97,3 +97,46 @@ building streamers for interactive use.
 This will not work for ROOT 6, it will need to be modified. The C++ stuff will
 be just fine, but ROOT 6 does not handle dictionary generation (needed to run
 your functions and classes interactively in CINT) the same way as ROOT 5.34.
+
+## Documentation
+
+Lists of classes and functions are white-space separated (i.e.):
+
+* --classes foo bar baz
+* --functions int,foo float,bar bool,baz
+
+The only optional argument is --overwrite. Add this to the argument list if and
+only if you wish to overwrite classes and functions with the blank template used
+in this program. This way, you can add new classes or functions to your project
+and get an automatically generated makefile and LinkDef for free.
+
+<pre>
+  -h, --help            show this help message and exit
+  -c [CLASSES [CLASSES ...]], --classes [CLASSES [CLASSES ...]]
+                        List the names of the classes to add to the project
+  -f [FUNCTIONS [FUNCTIONS ...]], --functions [FUNCTIONS [FUNCTIONS ...]]
+                        List the function and type as:<TYPE>,<FUNCTION NAME>
+  -l LIB_NAME, --lib_name LIB_NAME
+                        Give a name for the library
+  -s SOURCE_DIR, --source_dir SOURCE_DIR
+                        Give a path for the source directory
+  -m MACROS_DIR, --macros_dir MACROS_DIR
+                        Give a path for the macros directory
+  -b BUILD_DIR, --build_dir BUILD_DIR
+                        Give a path for the build directory
+  -i INSTALL_DIR, --install_dir INSTALL_DIR
+                        Give a path for your library installation directory
+  -o, --overwrite       Forces all generated files to overwrite existing
+                        files. Otherwise, only new classes and functions are
+                        written. Other boilerplate code that is not generally
+                        modified by the user is also regenerated (i.e.
+                        autogen.sh, Makefile.am, etc.)
+</pre>
+
+## Standard Disclaimer
+
+Any project you're working on should implement a frequent back up strategy. You
+should commit your code edits frequently to a repository like github. If you
+overwrite your whole project by using this tool, and you don't have a recent
+back up, that's your fault.  I've tried to make sure this can't happen unless
+you force it, but there may be bugs, so please proceed with caution.

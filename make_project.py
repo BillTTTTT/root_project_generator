@@ -276,18 +276,32 @@ def make_clean_file(lib_name,source_dir,build_dir,install_dir):
     clean_file.append("rm -vf %s/lib/lib%s*"%(install_dir,lib_name))
     return clean_file
 
-def dump_files(file_dict,file_suffix,directory):
+def dump_files(file_dict,file_suffix,directory,overwrite=False):
     """
     Dump a dictionary of files, indexed:
     <FILENAME>:<ARRAY OF LINES IN FILE>
     to directory dir
+
+    Must provide the file_file suffix, and whether or not to overwrite the
+    file, if it exists.
     """
     for name,file_lines in file_dict.iteritems():
         dump_name = "%s/%s%s"%(directory,name,file_suffix)
-        print "Creating",dump_name
-        with open(dump_name,'w') as out:
-            for line in file_lines:
-                out.write("%s\n"%line)
+        file_exists = False
+        if os.path.isfile(dump_name):
+            file_exists = True
+        if not file_exists:
+            print "Creating new file:",dump_name
+            with open(dump_name,'w') as out:
+                for line in file_lines:
+                    out.write("%s\n"%line)
+        elif file_exists and overwrite:
+            print "Creating new file:",dump_name
+            with open(dump_name,'w') as out:
+                for line in file_lines:
+                    out.write("%s\n"%line)
+        else:
+            print "%s%s"%(name,file_suffix),'exists, but you have not explicity asked to overwrite it with a new file.'
     return 0
 
 def main():
@@ -315,6 +329,10 @@ def main():
     parser.add_argument('-i','--install_dir',
             help='Give a path for your library installation directory',
             required=True)
+    parser.add_argument('-o','--overwrite',
+            help='Forces all generated files to overwrite existing files. Otherwise, only new classes and functions are written. Other boilerplate code that is not generally modified by the user is also regenerated (i.e. autogen.sh, Makefile.am, etc.)',
+            required=False,
+            action = "store_true")
     args = parser.parse_args()
 
     classes = args.classes
@@ -324,7 +342,9 @@ def main():
     source_dir = args.source_dir
     build_dir = args.build_dir
     install_dir = args.install_dir
-    
+    overwrite_toggle = False
+    if args.overwrite:
+        overwrite_toggle = True
     if source_dir[-1] == "/":
         source_dir = source_dir[:-1]
     if macros_dir[-1] == "/":
@@ -355,7 +375,7 @@ def main():
             function_sources[func[1]] = make_function_source(func[0],func[1])
             function_headers[func[1]] = make_function_header(func[0],func[1])
 
-    print "Note that autogenerating functions that return anything other numeric or boolean values, you have to edit the return value yourself."
+    print "If you specified function return type other then the built-in type primatives, your must edit the source file to add an appropriate return value, if you want your code to compile."
     # Create the files for the project
     test_macro = {}
     autogen_sh = {}
@@ -379,16 +399,17 @@ def main():
         os.makedirs(build_dir)
     if not os.path.exists(install_dir):
         os.makedirs(install_dir)
-    dump_files(class_sources,'.C',source_dir)
-    dump_files(class_headers,'.h',source_dir)
-    dump_files(function_sources,'.C',source_dir)
-    dump_files(function_headers,'.h',source_dir)
-    dump_files(Makefile,'.am',source_dir)
-    dump_files(linkDefFile,'.h',source_dir)
-    dump_files(autogen_sh,'.sh',source_dir)
-    dump_files(configure_ac,'.ac',source_dir)
-    dump_files(test_macro,'.C',macros_dir)
-    dump_files(clean_file,'.sh','.')
+
+    dump_files(class_sources,'.C',source_dir,overwrite_toggle)
+    dump_files(class_headers,'.h',source_dir,overwrite_toggle)
+    dump_files(function_sources,'.C',source_dir,overwrite_toggle)
+    dump_files(function_headers,'.h',source_dir,overwrite_toggle)
+    dump_files(Makefile,'.am',source_dir,True)
+    dump_files(linkDefFile,'.h',source_dir,True)
+    dump_files(autogen_sh,'.sh',source_dir,True)
+    dump_files(configure_ac,'.ac',source_dir,True)
+    dump_files(test_macro,'.C',macros_dir,True)
+    dump_files(clean_file,'.sh','.',True)
 
     st = os.stat('fullClean.sh')
     os.chmod('fullClean.sh', st.st_mode | stat.S_IEXEC)
