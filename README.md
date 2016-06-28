@@ -1,5 +1,9 @@
 # Boilerplate code for compiled functions and classes linked to ROOT
 
+## Step 0
+Read the documentation, email the author, michael.beaumier@gmail.com afterwards,
+if you have questions.
+
 ## Step 1
 
 Clone the repository:
@@ -109,6 +113,23 @@ The only optional argument is --overwrite. Add this to the argument list if and
 only if you wish to overwrite classes and functions with the blank template used
 in this program. This way, you can add new classes or functions to your project
 and get an automatically generated makefile and LinkDef for free.
+
+Note that when you use this program to add to an existing project, you must
+completely list all of the classes and functions that you are using in the
+arguments to this program - so maybe you might want to generate the arguments
+automatically.
+
+This program probably won't work if you try to use it on a project that was
+generated manually.
+
+This program doesn't deal with multiple functions in one file, but this is
+totally allowed in C++, and encouraged if there is a design reason for it.
+
+Remember that the purpose of this software is to get you started, so if you do
+too much more with it than getting the boilerplate stuff written, you might not
+get the behavior you're expecting.
+
+The standard -h output: 
 
 <pre>
   -h, --help            show this help message and exit
