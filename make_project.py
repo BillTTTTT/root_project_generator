@@ -353,6 +353,7 @@ def main():
             function_sources[func[1]] = make_function_source(func[0],func[1])
             function_headers[func[1]] = make_function_header(func[0],func[1])
 
+    print "Note that autogenerating functions that return anything other numeric or boolean values, you have to edit the return value yourself."
     # Create the files for the project
     test_macro = {}
     autogen_sh = {}
