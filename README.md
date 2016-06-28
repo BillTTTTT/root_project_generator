@@ -3,6 +3,7 @@
 ## Step 1
 
 Clone the repository:
+
 <code>
 git clone https://github.com/Jollyhrothgar/root_project_generator
 </code>
@@ -13,8 +14,7 @@ Run the script (example):
 
 <code> ./make_project.py --build_dir build --source_dir source --macros_dir
 macros -classes OneClass AnotherClass ThirdClass --functions int,FirstFunction
-double,SecondFunction --lib_name MyLibrary --install_dir $MYINSTALL 
-</code>
+double,SecondFunction --lib_name MyLibrary --install_dir $MYINSTALL</code>
 
 Note, you can use shorter versions of each CLI flag - just type "make_project.py
 -h"
