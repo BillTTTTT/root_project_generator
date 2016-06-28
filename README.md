@@ -16,24 +16,57 @@ git clone https://github.com/Jollyhrothgar/root_project_generator
 </pre>
 
 ## Step 2
+### Example Usage
 
-Run the script (example):
+Execute the project generation command:
+### Project Generation Example
+<pre> 
+./make_project.py --build_dir build --source_dir source --macros_dir \
+macros -classes OneClass AnotherClass ThirdClass --functions int,FirstFunction \
+double,SecondFunction --lib_name MyLibrary --install_dir $MYINSTALL 
+</pre>
 
-<pre> ./make_project.py --build_dir build --source_dir source --macros_dir
-macros -classes OneClass AnotherClass ThirdClass --functions int,FirstFunction
-double,SecondFunction --lib_name MyLibrary --install_dir $MYINSTALL</pre>
+An analysis project will be generated in your working directory. The structure
+will be as follows:
+
+### Generated Project Structure Example
+<pre>
+PROJECT DIRECTORY
+    fullClean.sh (run from PROJECT DIRECTORY to clean out all additional files
+                 generated from building the project. This can be moved into the
+                 Makefile, under 'make clean', if desired.)
+    source/
+        OneClass.C
+        OneClass.h
+        AnotherClass.C
+        AnotherClass.h
+        FirstFunction.C (returns an int)
+        FirstFunction.h (returns an int)
+        SecondFunction.C (returns a double)
+        SecondFunction.h (returns a double)
+        Makefile.am
+        configure.ac
+        MyLibraryLinkDef.h
+        autogen.sh
+    macros/
+        Run_Tests.C        
+    build/
+</pre>
+
+The default behavior in LinkDef is to *not* generate streamer libraries for
+classes. You must manually edit linkdef to add automatic streamer generation for
+your classes in order to enable writing a class to a root file. I find this
+behavior to be somewhat buggy if you use the standard template library in your
+classes (even with adding those STL objects to your linkdef), so I prefer to
+leave it out.
 
 Note, you can use shorter versions of each CLI flag - just type "make_project.py
 -h"
 
-This generates your project area with separated build, source and macros
-directories. Run it, and see how your project is structured. You also get a
-Makefile and a cleaning script as well. 
-
-Note you can call the classes and directories whatever you want. You can overlap
+You can call the classes and directories whatever you want. You can overlap
 directories as well. Some people prefer to build in their source directory. In
 that case just do: -source_dir source --build_dir source, this will put
-everything in a directory called 'src'. This only effects where the fullClean.sh
+everything in a directory called 'source'. This only effects where the fullClean.sh
 script looks to delete unnecessary build files, if you want to clean up your
 work area or re-compile.
 
@@ -46,8 +79,12 @@ Go to your build directory, and generate the makefiles for your project with:
 </pre>
 
 ## Step 4
-Compile and install your project with:
+While still in your build directory, compile your project with:
+<pre>
+make 
+</pre>
 
+And install your project libraries with:
 <pre>
 make install
 </pre>
@@ -65,7 +102,8 @@ and classes was instantiated.
 ## Next Steps
 
 You can now modify your classes and functions as you wish - add member functions
-to classes to abstract data types, add arguments to functions, etc. Modify as you wish.
+to classes to abstract data types, add arguments to functions, etc. You can
+start the 'real work'!
 
 ## Requirements
 
@@ -125,6 +163,24 @@ totally allowed in C++, and encouraged if there is a design reason for it.
 Remember that the purpose of this software is to get you started, so if you do
 too much more with it than getting the boilerplate stuff written, you might not
 get the behavior you're expecting.
+
+If you wish to run this software on RCF (if you're a PHENIX analyzer) you must
+change your autogen.sh file to read as follows:
+
+### PHENIX autogen.sh
+<pre>
+<code>
+#!/bin/sh
+srcdir=`dirname $0`
+test -z "$srcdir" && srcdir=.
+
+(cd $srcdir; aclocal -I ${OFFLINE_MAIN}/share;\
+ libtoolize --force; automake -a --add-missing; autoconf)
+
+$srcdir/configure "$@"
+</code>
+</pre>
+Since PHENIX puts  its libtoolize and autotools installation in <pre>$OFFLINE_MAIN</pre>.
 
 The standard -h output: 
 
