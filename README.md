@@ -1,10 +1,13 @@
-# Boilerplate code for compiled funcitons and classes linked to ROOT
+# Boilerplate code for compiled functions and classes linked to ROOT
 
-## 1
+## Step 1
 
-Clone the repository
+Clone the repository:
+<code>
+git clone https://github.com/Jollyhrothgar/root_project_generator
+</code>
 
-## 2
+## Step 2
 
 Run the script (example):
 
@@ -20,22 +23,29 @@ This generates your project area with separated build, source and macros
 directories. Run it, and see how your project is structured. You also get a
 Makefile and a cleaning script as well. 
 
-## 3 
+Note you can call the classes and directories whatever you want. You can
+overlap directories as well. Some people prefer to build in their source
+directory. In that case just do: -s src -b src, this will put everything in a
+directory called 'src'. This only effects where the fullClean.sh script looks
+to delete unnecessary build files, if you want to clean up your work area or
+re-compile.
+
+## Step 3 
 
 Go to your build directory, and generate the makefiles for your project with:
 
 <code>
-../source/autogen --prefix=$MYINSTALL
+../source/autogen.sh --prefix=$MYINSTALL
 </code>
 
-## 4
+## Step 4
 Compile and install your project with:
 
 <code>
 make install
 </code>
 
-## 5
+## Step 5
 Now, go to the macros directory, and test the project with:
 
 <code>
@@ -66,4 +76,4 @@ building streamers for interactive use.
 
 This will not work for ROOT 6, it will need to be modified. The C++ stuff will
 be just fine, but ROOT 6 does not handle dictionary generation (needed to run
-your funcitons and classes interactively in CINT) the same way as ROOT 5.34.
+your functions and classes interactively in CINT) the same way as ROOT 5.34.
