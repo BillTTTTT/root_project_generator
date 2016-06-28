@@ -67,6 +67,19 @@ on your computer containing "$MYINSTALL/lib". This is where all your compiled
 libraries should be. $MYINSTALL should be added to your $PATH variable, so that
 you can use your root libraries from any location on your system.
 
+In bash, (i.e. ~/.bashrc), this would look like:
+<code>
+export MYINSTALL=/direct/phenix+u/workarea/beaumim/install
+export PATH=$PATH:$MYINSTALL
+</code>
+
+In cshell, (i.e. ~/.cshrc), this would look like:
+
+<code>
+setenv MYINSTALL /direct/phenix+u/beaumim/workarea/install
+set path = ($MYINSTALL/bin $path)
+</code>
+
 If you use this script on a cluster, you will need to modify the autogen.sh file
 to point to wherever libtoolize is installed (for PHENIX, its in $OFFLINE_MAIN).
 
